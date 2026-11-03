@@ -4,6 +4,15 @@
 
 ## 错误条目
 
+### ERR-022 jsDelivr 对 GitHub 文件上限实为 20MB,超标视频 403
+- **错误现象**: 产品视频接入 jsDelivr 直链后,9 段中 5 段(>20MB:yk_3f_2/yk_of_3_1/2/3 等)HEAD 返回 403,响应体「File size exceeded the configured limit of 20 MB」,视频无法播放
+- **发生上下文**: 产品视频任务浏览器验证阶段,页面内 fetch HEAD 403 触发排查(2026-11-03)
+- **根本原因**: 方案设计时按「jsDelivr 单文件 50MB」旧印象评估(50MB 是 npm 通道的口径,/gh/ GitHub 通道现为 20MB),且未先用真实文件实测;计划审批时的「最大 34.4MB 满足」为错误前提
+- **解决方式**: ghVideo() 改返回源数组——≤20MB 段 [jsDelivr, raw] 双源(原生 <source> 链自动回退),>20MB 段直接 [raw](jsDelivr 对其必然 403 不再浪费请求);数据层集中一处,后续切换自托管只改该函数
+- **验证结果**: curl 全量 9 URL:4 小文件 jsDelivr 200、5 大文件 raw 200;浏览器实测(静态 preview):五产品 currentSrc 选源正确(4 小=jsDelivr、大=raw),YK-3E(60s/jsDelivr)与 YK-OF-3I(165s/raw)loadedmetadata+readyState 4 真实可播;页面内模拟第一源 404 → 自动回退 raw 加载成功(40s)
+- **教训**: 第三方 CDN/托管选型必须先用**真实目标文件**实测 HEAD/GET 再定方案,不能凭记忆中的配额;多源 <source> 是零成本回退手段
+- **状态**: 🟢 已解决(2026-11-03)
+
 ### ERR-021 Git Bash 下 `VITE_BASE=/` 被 MSYS 路径转换,构建产物资源路径全变 `/Git/assets/`
 - **错误现象**: 为 VPS 根路径部署执行 `VITE_BASE=/ npm run build`,dist/index.html 资源引用变成 `/Git/assets/...`,部署后必然白屏
 - **发生上下文**: 整站 VPS 部署适配任务,本机 Windows Git Bash 构建验证(2026-11-02)

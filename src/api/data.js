@@ -79,6 +79,8 @@ export async function hydrateProducts() {
                 image: productImage(p.image),
                 images: galleryImages(p.gallery),
                 desc: p.desc,
+                // API 不提供视频,由静态种子按型号透传,防止 replaceList 丢弃(ERR-019 同类)
+                videos: prodSeed.get(p.model)?.videos,
               },
               prodSeed.get(p.model)
             )

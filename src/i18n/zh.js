@@ -114,6 +114,7 @@ export default {
     ctaDesc: '告诉我们您的边框规格与产能需求，寅铠工程师将为您提供针对性的设备选型与产线规划方案。',
     ctaBtn: '咨询选型方案',
     paramsTitle: '设备参数',
+    videoTitle: '设备视频',
   },
   news: {
     title: '新闻动态',

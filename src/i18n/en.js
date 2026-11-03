@@ -114,6 +114,7 @@ export default {
     ctaDesc: 'Tell us your frame specifications and capacity needs — Yinkai engineers will propose the right equipment and line layout.',
     ctaBtn: 'Request a Proposal',
     paramsTitle: 'Equipment Parameters',
+    videoTitle: 'Equipment Videos',
   },
   news: {
     title: 'News',

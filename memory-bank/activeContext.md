@@ -1,13 +1,10 @@
-## 当前焦点(2026-11-02):整站 VPS+Nginx 部署物料与代码适配(已完成)
-结果:用户选定方案一(整站部署海外 VPS)。
-- 后端:index.js `trust proxy 1`;新增 server/src/routes/forms.js——POST /api/contact(JSON)、/api/apply(multipart 简历附件,multer 内存态 + `defParamCharset:'utf8'`),nodemailer@10 经 SMTP 发到 MAIL_TO,formLimiter 10 次/15min 两路由共享;SMTP 未配置 503;.env.example 补 SMTP_*/MAIL_FROM/MAIL_TO
-- 前端:vite base 改 `VITE_DEPLOY==='vps' || NETLIFY ? '/' : '/yinkaish/'`;src/api/forms.js 双通道(先后端 JSON 应答为准,否则回退 Netlify 影子表单),Contact/Careers 接入,Contact 按钮加 loading
-- 物料:deploy/nginx.conf(占位 __DOMAIN__)、deploy/update-server.sh、deploy/README.md(初始化/迁移/pm2/Nginx/certbot/验收/发版/备份/排障/三平台对照)、server/ecosystem.config.cjs、.gitattributes(sh/conf 强制 LF)、server/README 补接口与部署章节
-- 验证:`VITE_DEPLOY=vps` 与默认两种 build 通过且资源前缀分别为 `/assets/`、`/yinkaish/assets/`;后端冒烟 8 项全符合预期(health 200 / 校验 400 / 无 SMTP 503 / txt 附件被拒 / pdf 进入发送链 / 第 11 次 429);中文文件名 utf8 对照验证通过
-- 过程错误:ERR-021(Git Bash 把 `VITE_BASE=/` 转成 `D:/Git/`,改枚举 token 解决)已入档并加防回归 #16/#17
-下一步(用户侧,按 deploy/README.md):购买 Ubuntu VPS + 域名 A 记录 → 初始化/装环境 → mysqldump utf8mb4 迁移库与 server/uploads → 填 server/.env(JWT_SECRET/FRONTEND_ORIGIN/SMTP) → `bash deploy/update-server.sh` → Nginx 模板 + certbot → 验收清单(含立即改 admin 默认密码)。上机后若有问题按 README §6 排障对照表处理;Netlify/GitHub Pages 线上行为不变。
+## 当前焦点(2026-11-03):产品页设备视频接入(已完成)
+结果:业务与产品页 5 款设备新增视频区(简介后/参数前,绿色标题条+16:9 播放器+序号切换):YK-3E 1段、YK-3F 2段、YK-AL-1 1段、YK-OL-2I 2段、YK-OF-3I 3段,来源 github.com/yinkai411/vedios 直链(零仓库成本)。实施中踩 ERR-022:**jsDelivr 对 GitHub 文件上限实为 20MB**(计划误写 50MB),5 段超标——ghVideo() 改多源链:≤20MB [jsDelivr,raw] 自动回退,>20MB 直走 raw;曾就托管重选询问用户未获回复,按其原「零仓库成本」偏好采混合方案。水合透传 videos 字段(api/data.js,防 ERR-019 同类丢弃)。验证:build 过;13 产品全量核对恰好 5 款有视频、双通道 loadedmetadata 真实可播、404 模拟回退成功、EN 标题、375px 无溢出;**水合路径因 MySQL/server 停机未实测**(透传行与已实测的 withEn 同构,下次 dev 起后端时顺带复核)。
+遗留:>20MB 的 5 段走 raw,大陆可用性差;若需全地域可靠,改 ghVideo() 一处切自托管(视频下载入仓库)。
+下一步(候选):后端部署 VPS 上机;下次本地起 MySQL+server 后复核 /products 视频区(水合路径)。
 
 ## 上一焦点(2026-11-02,概要)
+- 整站 VPS 部署适配(ERR-021):trust proxy+表单邮件接口+VITE_DEPLOY=vps+deploy/ 物料;待用户上机
 - 首页伙伴墙 20 个 logo 全裂修复(ERR-020):partnerImgs 短键 pN 与 assets.js 映射键 pN.png 失配,被后端水合掩盖;index.js 重建短键映射,preview 静态路径实测 20/20 正常
 
 ## 上一焦点(2026-10-23,概要)

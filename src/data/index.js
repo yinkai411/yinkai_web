@@ -76,6 +76,15 @@ import ykLuomuImg from '../assets/products/yk-zidongsuoluomushengchanxian_banner
 // YK-OL-2I 多图画廊(本地图片库,按文件名顺序)——映射表见 ./assets
 const ykOl2iImages = ol2iGallery
 
+// 产品视频(github.com/yinkai411/vedios 直链,零仓库成本)。
+// jsDelivr 对 GitHub 文件上限 20MB(ERR-022):超标段只能走 raw.githubusercontent.com(大陆可用性差,属已知取舍);
+// 未超标段 jsDelivr 优先、raw 兜底,由 <video><source> 多源链自动回退
+const ghVideo = (dir, file, over20mb = false) => {
+  const path = `${encodeURIComponent(dir)}/${file}`
+  const raw = `https://raw.githubusercontent.com/yinkai411/vedios/main/${path}`
+  return over20mb ? [raw] : [`https://cdn.jsdelivr.net/gh/yinkai411/vedios@main/${path}`, raw]
+}
+
 export const productCategoriesSeed = [
   {
     id: 'pv-alu',
@@ -163,6 +172,7 @@ export const productCategoriesSeed = [
         model: 'YK-3E',
         tag: { zh: '长边自动码垛机', en: 'Long-Edge Stacker' },
         image: yk3eImg,
+        videos: [ghVideo('长边码垛', 'yk_3e_1.mp4')],
         desc: {
           zh: '适用 1500-2600mm 长边框自动码垛，外形 7000×6300×2500mm，稼动率 98%。',
           en: 'Automatic stacking for 1500-2600mm long frames, footprint 7000×6300×2500mm, 98% uptime.',
@@ -172,6 +182,7 @@ export const productCategoriesSeed = [
         model: 'YK-3F',
         tag: { zh: '短边自动码垛机', en: 'Short-Edge Stacker' },
         image: yk3fImg,
+        videos: [ghVideo('短边码垛', 'yk_3f_1.mp4'), ghVideo('短边码垛', 'yk_3f_2.mp4', true)],
         desc: {
           zh: '适用 850-1500mm 短边框自动码垛，外形 5000×7200×2500mm，稼动率 98%。',
           en: 'Automatic stacking for 850-1500mm short frames, footprint 5000×7200×2500mm, 98% uptime.',
@@ -191,6 +202,7 @@ export const productCategoriesSeed = [
         model: 'YK-AL-1',
         tag: { zh: '桁架式自动上料', en: 'Gantry-Type Auto Feeding' },
         image: ykAl1Img,
+        videos: [ghVideo('自动上料', 'yk_al_1.mp4')],
         desc: {
           zh: '适用原料长 3900-7500mm、宽 30-45mm、高 11-35mm；最大承重 3000kg（含托盘），托盘存放 360 支，上料节拍 2 秒/支，缓冲区可存 50 支确保不停机换框，稼动率 ≥85%。',
           en: 'For raw material 3900-7500mm long, 30-45mm wide, 11-35mm high; 3000kg max load (incl. pallet), 360 pcs per pallet, 2s feeding cycle, 50-pc buffer for non-stop changeover, ≥85% uptime.',
@@ -211,6 +223,7 @@ export const productCategoriesSeed = [
         tag: { zh: '在线视觉检测', en: 'Inline Inspection' },
         image: ykOl2iImg,
         images: ykOl2iImages,
+        videos: [ghVideo('外观检测', 'VI_1.mp4'), ghVideo('外观检测', 'VI_2.mp4')],
         desc: {
           zh: '设备与上一工位对接，加工后的产品自动输送到设备内部待检测，本设备自动检测产品的长度、漏加工、外观瑕疵。检测后的产品自动分类输送到下一工位。',
           en: 'Docking with the upstream station, processed products are automatically conveyed inside for inspection. The machine automatically checks length, missed operations and surface defects, then sorts and conveys products to the next station.',
@@ -220,6 +233,7 @@ export const productCategoriesSeed = [
         model: 'YK-OF-3I',
         tag: { zh: '离线视觉检测', en: 'Offline Inspection' },
         image: ykOl3iImg,
+        videos: [ghVideo('全尺寸检测', 'yk_of_3_1.mp4', true), ghVideo('全尺寸检测', 'yk_of_3_2.mp4', true), ghVideo('全尺寸检测', 'yk_of_3_3.mp4', true)],
         desc: {
           zh: '离线式检测站，外形 3900×1550×2500mm，全尺寸检测并自动生成可追溯报告。',
           en: 'Offline inspection station, footprint 3900×1550×2500mm, full-size inspection with traceable reports.',

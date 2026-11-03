@@ -51,6 +51,32 @@
             <p class="detail-desc">{{ pick(selectedProd.desc, locale) }}</p>
           </div>
 
+          <!-- 设备视频:jsDelivr CDN 直链,多段时序号切换;preload=metadata 点开才加载 -->
+          <div v-if="videos.length" class="detail-video">
+            <div class="detail-video__head">
+              <span>{{ $t('services.videoTitle') }}</span>
+              <div v-if="videos.length > 1" class="detail-video__tabs">
+                <button
+                  v-for="(_, i) in videos"
+                  :key="i"
+                  type="button"
+                  class="detail-video__tab"
+                  :class="{ 'is-active': i === videoIdx }"
+                  @click="videoIdx = i"
+                >{{ i + 1 }}</button>
+              </div>
+            </div>
+            <!-- 多源链:jsDelivr 失败(如超 20MB 403/CDN 波动)时浏览器自动回退下一个 source(raw) -->
+            <video
+              :key="`${selectedProd.model}-${videoIdx}`"
+              class="detail-video__player"
+              controls
+              preload="metadata"
+            >
+              <source v-for="(s, i) in videos[videoIdx]" :key="i" :src="s" type="video/mp4" />
+            </video>
+          </div>
+
           <div class="detail-params">
             <div class="params-head">
               <span>{{ $t('services.paramsTitle') }}</span>
@@ -109,6 +135,10 @@ const stepFig = (d) => {
   restartFigTimer()
 }
 
+/* 设备视频:多段时序号切换,:key 重建 video 元素强制换源 */
+const videoIdx = ref(0)
+const videos = computed(() => selectedProd.value.videos ?? [])
+
 const select = (cat, prod) => {
   selected.value = { catId: cat.id, model: prod.model }
   openCat.value = cat.id
@@ -132,6 +162,7 @@ const startFigTimer = () => {
 }
 watch(selectedProd, () => {
   figIdx.value = 0
+  videoIdx.value = 0
   startFigTimer()
 })
 onMounted(() => {
@@ -351,6 +382,60 @@ onBeforeUnmount(() => clearInterval(figTimer))
 .detail-desc {
   color: var(--c-text-secondary);
   line-height: 1.8;
+}
+
+/* ---------- 设备视频 ---------- */
+.detail-video__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(90deg, var(--c-primary-dark), var(--c-primary));
+  color: #fff;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 12px 18px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.detail-video__tabs {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.detail-video__tab {
+  min-width: 28px;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.detail-video__tab:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.detail-video__tab.is-active {
+  background: #fff;
+  border-color: #fff;
+  color: var(--c-primary-dark);
+  font-weight: 700;
+}
+
+.detail-video__player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--c-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
 }
 
 /* ---------- 参数表格 ---------- */

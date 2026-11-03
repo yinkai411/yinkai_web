@@ -6,6 +6,7 @@
 - element-plus@2(按需:unplugin-vue-components + ElementPlusResolver)+ @element-plus/icons-vue
 - flag-icons(MIT,国旗 SVG 素材包):**已卸载依赖,51 面所用旗帜 SVG 已复制入 `src/assets/flags/`**(仓库自持,import.meta.glob 按需加载);用于联系页区号自动匹配国旗(见 ERR-007,emoji 旗帜 Windows 不可用);区号数据表在 `src/data/dialCodes.js`
 - 样式:原生 CSS + design tokens,无预处理器;品牌素材(logo/轮播图)在 `src/assets/`
+- **产品视频(2026-11-03)**:github.com/yinkai411/vedios 直链(零仓库成本),URL 构造集中在 src/data/index.js 的 ghVideo();**jsDelivr /gh/ 对 GitHub 文件上限 20MB(ERR-022)**——≤20MB [jsDelivr,raw] 双源(原生 <source> 自动回退),>20MB 直走 raw(大陆可用性差属已知取舍);依赖 vedios 仓库保持 public 且文件不改名;切自托管只需改 ghVideo() 一处;管理端/库无视频字段,水合由 api/data.js 按型号从种子透传
 - **构建约束**:`vite.config.js` 已设 `build.minify:false`——esbuild 压缩在本项目会产生变量名冲突(页脚组件渲染丢失,见 errorlog ERR-001);产物约 641KB(gzip 150KB),官网可接受,勿随意改回
 - **i18n 约束**:消息含 `@` 等保留字符需 `{'@'}` 转义(邮箱地址);main.js 的 app.config.errorHandler 用于生产排错
 

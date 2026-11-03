@@ -19,6 +19,7 @@ Vue 3(`<script setup>`)+ Vite SPA:
 
 ## 已知陷阱与规避模式
 - **部署开关用枚举 token,不用路径字面量(ERR-021)**:Git Bash/MSYS 会把 `/` 开头的环境变量值转成 Windows 路径;构建成功 ≠ 产物正确,必须核对 dist/index.html 资源前缀。反代后端须 `trust proxy`,否则限速按 Nginx IP 计且 express-rate-limit 直接抛错
+- **第三方 CDN/托管配额须用真实文件实测(ERR-022)**:文档口径分通道(jsDelivr npm 50MB vs /gh/ 20MB),凭印象评估会翻车;外部媒体用多源 <source> 链可零成本回退
 - **映射重构须核对消费方键契约(ERR-020)**:抽取共享映射(assets.js 文件名键)到公共模块时,既有数据的引用键(pN 短键)必须同步或在别名处重建键形态;「水合掩盖静态兜底缺陷」——兜底路径(后端停机/纯静态部署)必须独立验证,不能只测带后端的 dev
 - **网格/flex 轨道被 min-content 撑破(ERR-002)**:`1fr` 轨道实际是 `minmax(auto,1fr)`,轨道内含不可收缩内容(如 flex-shrink:0 的横滚缩略图行)会把轨道撑到内容宽、整页横向溢出;修法=网格项加 `min-width: 0`,让内部 overflow-x:auto 生效
 - **布局禁用 100vw(ERR-003)**:有纵向滚动条时 100vw 比可用宽大一个滚动条宽,间距用 % / clamp

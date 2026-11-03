@@ -36,6 +36,7 @@
 | 2026-09-30 | 0.13.2 | 修复 ElMessageBox 无样式缩左上角(ERR-013):补函数式组件样式 + el-config-provider 接 EP locale;新闻分类改下拉可选可输 |
 | 2026-09-30 | 0.14.0 | 产品图片本地上传:后端 /api/admin/upload(multer,自动重命名 img-时间戳-随机)+ /uploads 静态托管;主图单张/画廊多张,解析双轨兼容素材文件名(ERR-014 参数乱码同日修复) |
 | 2026-09-30 | 0.14.1 | 荣誉/伙伴管理接入本地上传与点击放大预览(useImageUpload 共用);修复首页伙伴墙 lazy 0×0 死锁(ERR-015) |
+| 2026-11-03 | 0.16.0 | 产品页设备视频:5 款设备(YK-3E/3F/AL-1/OL-2I/OF-3I)接入 github.com/yinkai411/vedios 9 段视频,多源链 jsDelivr+raw(超 20MB 走 raw,ERR-022),水合透传 videos,单播放器+序号切换 |
 | 2026-11-02 | 0.15.0 | 整站 VPS 部署适配:后端 trust proxy + 表单邮件接口(/api/contact、/api/apply,nodemailer+multer 附件)+ formLimiter;前端 VITE_DEPLOY=vps 根路径 + 表单双通道(先后端后 Netlify);deploy/ 物料(nginx.conf、update-server.sh、README 手册)+ pm2 ecosystem;双模式 build 与 8 项接口冒烟通过(ERR-021 同日修复) |
 | 2026-11-02 | 0.14.4 | 修复首页伙伴墙 20 个 logo 全裂:e1fdc27 抽取 assets.js 时映射键失配(pN vs pN.png),静态兜底引用全 undefined,重建短键映射(ERR-020,线上自 09-29 即裂) |
 | 2026-10-23 | 0.14.3 | 修复英文界面动态内容回退中文:水合时按业务键从静态双语种子合并 en 回 API 行(ERR-019),新闻/职位/产品参数/荣誉/伙伴全模块生效 |
